@@ -4,6 +4,7 @@ import {
   MdAddCircleOutline,
   MdRemoveCircleOutline,
 } from 'react-icons/md';
+import { useCart } from '../../hooks/useCart';
 
 // import { useCart } from '../../hooks/useCart';
 // import { formatPrice } from '../../util/format';
