@@ -25,9 +25,7 @@ interface CartItemsAmount {
 const Home = (): JSX.Element => {
   const [products, setProducts] = useState<ProductFormatted[]>([]);
   const [stock, setStock]=useState<Stock[]>([]);
-  const { addProduct, cart } = useCart();
-
-  // console.log(cart)
+  const { addProduct, updateProductAmount, cart } = useCart();
 
   const cartItemsAmount =  cart.reduce((sumAmount, product) => {
     sumAmount[product.id] = product.amount;
@@ -35,9 +33,6 @@ const Home = (): JSX.Element => {
     return sumAmount;
   }, {} as CartItemsAmount)
   
-  
-  // localStorage.setItem('@RocketShoes:cart', "");
-    
   useEffect(() => {
     async function loadProducts() {
       api.get('Products')
@@ -54,7 +49,15 @@ const Home = (): JSX.Element => {
   }, []);
 
   function handleAddProduct(id: number) {
-    addProduct(id);
+    // Variável que vai indicar se existe o produdo no carrinho
+    const productCart = cart.find(item =>item.id === id);
+
+    if(productCart === undefined){
+      addProduct(id);
+    }else{
+      updateProductAmount({productId: id, amount: 1});
+    }
+    
   }
 
   return (
