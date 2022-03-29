@@ -25,7 +25,7 @@ interface CartItemsAmount {
 const Home = (): JSX.Element => {
   const [products, setProducts] = useState<ProductFormatted[]>([]);
   const [stock, setStock]=useState<Stock[]>([]);
-  const { addProduct, updateProductAmount, cart } = useCart();
+  const { addProduct, cart } = useCart();
 
   const cartItemsAmount =  cart.reduce((sumAmount, product) => {
     sumAmount[product.id] = product.amount;
@@ -49,15 +49,7 @@ const Home = (): JSX.Element => {
   }, []);
 
   function handleAddProduct(id: number) {
-    // Variável que vai indicar se existe o produdo no carrinho
-    const productCart = cart.find(item =>item.id === id);
-
-    if(productCart === undefined){
-      addProduct(id);
-    }else{
-      updateProductAmount({productId: id, amount: 1});
-    }
-    
+    addProduct(id);
   }
 
   return (

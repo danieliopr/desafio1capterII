@@ -18,7 +18,7 @@ interface Product {
 
 const Cart = (): JSX.Element => {
   const { cart, removeProduct, updateProductAmount, addProduct } = useCart();
-  
+
   const total =
     formatPrice(
       cart.reduce((sumTotal, product) => {
@@ -54,8 +54,7 @@ const Cart = (): JSX.Element => {
         </thead>
         <tbody>
           {cart.map(itemCart =>(
-
-            <tr data-testid="product">
+            <tr key={itemCart.id} data-testid="product">
               <td>
                 <img src={itemCart.image} alt={itemCart.title} />
               </td>

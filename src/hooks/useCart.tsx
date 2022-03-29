@@ -36,7 +36,12 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
   const addProduct = async (productId: number) => {
     try {
-      console.log('addProduct')
+      const productCart = cart.find(item =>item.id === productId);
+
+      if(productCart !== undefined){
+        updateProductAmount({productId, amount: 1});
+        return;
+      }
 
       // Busco as informações do produto
       const product: ProductSelected = await api.get('Products/' + productId)
@@ -120,7 +125,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       console.log(cart)
 
       // Verifico se tem estoque, e caso não tenho, não executo o resto do código
-      if(stock.amount < 1 && amount > 0){
+      if(stock.amount < amount){
         toast.error('Quantidade solicitada fora de estoque');
         return;
       }
