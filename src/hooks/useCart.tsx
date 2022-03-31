@@ -44,11 +44,11 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       }
 
       // Busco as informações do produto
-      const product: ProductSelected = await api.get('Products/' + productId)
+      const product: ProductSelected = await api.get('products/' + productId)
         .then(response => response.data);
 
       // Busco o estoque do produto
-      const stock: Stock = await api.get('Stock/' + productId)
+      const stock: Stock = await api.get('stock/' + productId)
         .then(response => response.data);
       
       console.log(cart)
@@ -79,7 +79,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       localStorage.setItem('@RocketShoes:cart', JSON.stringify(newCart));
 
       // Atualizo o estoque no banco de dados
-      await api.put('Stock/' + productId, {id:productId, amount: stock.amount - 1});
+      await api.put('stock/' + productId, {id:productId, amount: stock.amount - 1});
     } catch {
       toast.error('Erro na adição do produto');
     }
@@ -100,11 +100,11 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       setCart(newCart);
 
       // Busco o estoque do produto
-      const stock: Stock = await api.get('Stock/' + productId)
+      const stock: Stock = await api.get('stock/' + productId)
         .then(response => response.data);
 
       // Atualizo o banco de dados
-      await api.put('Stock/' + productId, {id:productId, amount: productAmount + stock.amount});
+      await api.put('stock/' + productId, {id:productId, amount: productAmount + stock.amount});
 
     } catch {
       toast.error('Erro na remoção do produto');
@@ -119,7 +119,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       console.log('atualizando estoque');
       
       // Busco o estoque do produto
-      const stock: Stock = await api.get('Stock/' + productId)
+      const stock: Stock = await api.get('stock/' + productId)
         .then(response => response.data);
       
       console.log(cart)
@@ -141,7 +141,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       localStorage.setItem('@RocketShoes:cart', JSON.stringify(newCart));
 
       // Atualizo o estoque no banco de dados
-      await api.put('Stock/' + productId, {id:productId, amount: stock.amount - amount });
+      await api.put('stock/' + productId, {id:productId, amount: stock.amount - amount });
       
     } catch {
       toast.error('Erro na alteração de quantidade do produto');
