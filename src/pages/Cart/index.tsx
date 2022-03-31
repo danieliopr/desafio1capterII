@@ -17,7 +17,13 @@ interface Product {
 }
 
 const Cart = (): JSX.Element => {
-  const { cart, removeProduct, updateProductAmount, addProduct } = useCart();
+  const { cart, removeProduct, updateProductAmount } = useCart();
+
+  const cartFormatted = cart.map(product => ({
+    ...product,
+    priceFormatted: formatPrice(product.price),
+    subTotal: formatPrice(product.price * product.amount)
+  }))
 
   const total =
     formatPrice(
@@ -29,11 +35,11 @@ const Cart = (): JSX.Element => {
     )
 
   function handleProductIncrement(product: Product) {
-    addProduct(product.id);
+    updateProductAmount({ productId: product.id, amount: product.amount + 1 });
   }
 
   function handleProductDecrement(product: Product) {
-    updateProductAmount({productId: product.id, amount: -1});
+    updateProductAmount({ productId: product.id, amount: product.amount - 1 });
   }
 
   function handleRemoveProduct(productId: number) {
@@ -53,14 +59,14 @@ const Cart = (): JSX.Element => {
           </tr>
         </thead>
         <tbody>
-          {cart.map(itemCart =>(
+          {cartFormatted.map(itemCart => (
             <tr key={itemCart.id} data-testid="product">
               <td>
                 <img src={itemCart.image} alt={itemCart.title} />
               </td>
               <td>
                 <strong>{itemCart.title}</strong>
-                <span>{formatPrice(itemCart.price)}</span>
+                <span>{itemCart.priceFormatted}</span>
               </td>
               <td>
                 <div>
@@ -88,7 +94,7 @@ const Cart = (): JSX.Element => {
                 </div>
               </td>
               <td>
-                <strong>{formatPrice(itemCart.price * itemCart.amount)}</strong>
+                <strong>{itemCart.subTotal}</strong>
               </td>
               <td>
                 <button
